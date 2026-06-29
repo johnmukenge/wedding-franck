@@ -47,23 +47,23 @@ export const weddingData: WeddingData = {
   dressCode: 'Noir doré',
   schedule: [
     {
-      title: 'Church Ceremony',
-      time: '10:00',
+      title: 'Nuptial Blessing',
+      time: '12:00',
       description: 'Mariage religieux à la Salle Food Market, Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema.',
     },
     {
-      title: 'Shooting & Media Moments',
-      time: '12:30',
+      title: 'Shooting',
+      time: '15:00',
       description: 'Photos et vidéos des mariés avec les proches.',
     },
     {
-      title: 'Reception Dinner',
-      time: '14:00',
-      description: 'Réception et repas à la Salle Food Market, Avenue Nguma 102.',
+      title: 'Dance Party',
+      time: '19:00',
+      description: 'Soirée dansante et ambiance festive.',
     },
     {
-      title: 'Cake Cutting & Celebration',
-      time: '16:00',
+      title: 'Cake Cutting',
+      time: '23:00',
       description: 'Découpe du gâteau et célébration.',
     },
   ],
@@ -91,9 +91,9 @@ export const weddingData: WeddingData = {
     },
     {
       id: 4,
-      alt: 'Franck et Charly portrait 1 bis',
-      src: '/media/Franck%20et%20Charlie.jpeg',
-      width: 854,
+      alt: 'Franck et Charly portrait 4',
+      src: '/media/Franck%20et%20Charlie%204.jpeg',
+      width: 851,
       height: 1280,
     },
     {
