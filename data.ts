@@ -49,7 +49,7 @@ export const weddingData: WeddingData = {
     {
       title: 'Nuptial Blessing',
       time: '12:00',
-      description: 'Mariage religieux à la Salle Food Market, Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema.',
+      description: 'Bénédiction nuptiale à la Paroisse Saint Pie X, Av. Movenda n°85 C/ Ngiri-Ngiri, Direction Assossa-Shaba, Réf. Lycée Movenda.',
     },
     {
       title: 'Shooting',

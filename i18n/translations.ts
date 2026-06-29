@@ -36,7 +36,8 @@ export const translations: Translations = {
     groomHomeLabel: 'Groom lives in',
     brideHomeLabel: 'Bride lives in',
     guestArrival: 'Nuptial Blessing',
-    guestArrivalDesc: 'Religious wedding at Salle Food Market, Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema.',
+    guestArrivalDesc:
+      'Nuptial blessing at Paroisse Saint Pie X, Av. Movenda No. 85, C/ Ngiri-Ngiri, Assossa-Shaba direction, Ref. Lycée Movenda.',
     ceremony: 'Shooting',
     ceremonyDesc: 'Professional photos and videos with family and guests.',
     reception: 'Dance Party',
@@ -123,7 +124,8 @@ export const translations: Translations = {
     groomHomeLabel: 'Le marié vit à',
     brideHomeLabel: 'La mariée vit en',
     guestArrival: 'Bénédiction nuptiale',
-    guestArrivalDesc: 'Mariage religieux à la Salle Food Market, Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema.',
+    guestArrivalDesc:
+      'Bénédiction nuptiale à la Paroisse Saint Pie X, Av. Movenda n°85 C/ Ngiri-Ngiri, Direction Assossa-Shaba, Réf. Lycée Movenda.',
     ceremony: 'Shooting',
     ceremonyDesc: 'Séances photos et vidéos professionnelles',
     reception: 'Soirée dansante',
