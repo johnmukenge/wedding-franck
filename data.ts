@@ -111,7 +111,7 @@ export const weddingData: WeddingData = {
       height: 1366,
     },
   ],
-  audioUrl: '/media/etoile-du-matin.amr',
+  audioUrl: '/media/wedding-song.m4a',
 };
 
 export const traditionalWeddingData: WeddingData = {
@@ -194,5 +194,5 @@ export const traditionalWeddingData: WeddingData = {
       height: 1366,
     },
   ],
-  audioUrl: '/media/etoile-du-matin.amr',
+  audioUrl: '/media/wedding-song.m4a',
 };
