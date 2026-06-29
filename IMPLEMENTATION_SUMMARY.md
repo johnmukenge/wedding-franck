@@ -155,7 +155,7 @@ const { language, setLanguage, t } = useLanguage();
 2. **Switch language** → Click English/Français buttons
 3. **View countdown** → See days/hours/minutes/seconds until wedding
 4. **Check details** → Event schedule, venue, dress code
-5. **RSVP** → Click "Open RSVP" button
+5. **RSVP** → Click "Invitation" button
 6. **Confirm attendance** → Select "Yes" or "No"
 7. **Fill form** (if yes) → Enter name, family name, email
 8. **Generate invitation** → Click button, PDF downloads

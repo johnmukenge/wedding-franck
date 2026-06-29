@@ -115,7 +115,7 @@ npm start
 - All text updates dynamically
 
 ### RSVP Flow
-1. Scroll to RSVP section or click "Open RSVP"
+1. Scroll to RSVP section or click "Invitation"
 2. Confirm your attendance ("Yes" or "No")
 3. If "Yes":
    - Fill in your First Name, Last Name, Email

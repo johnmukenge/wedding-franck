@@ -34,6 +34,45 @@ const getLocale = (language: Language) => {
 
 const localize = (language: Language, key: string) => getTranslation(language, key);
 
+function normalizeWhitespace(value: string) {
+  return value.replace(/\s+/g, ' ').trim();
+}
+
+function extractCivilite(firstName: string): { civilite: 'Mr' | 'Mme' | 'Mlle' | null; cleanFirstName: string } {
+  const normalized = normalizeWhitespace(firstName || '');
+  const match = normalized.match(/^(mr|m\.?|monsieur|mme|madame|mlle|mademoiselle)\b\.?\s*/i);
+
+  if (!match) {
+    return { civilite: null, cleanFirstName: normalized };
+  }
+
+  const raw = match[1].toLowerCase().replace('.', '');
+  const cleanFirstName = normalizeWhitespace(normalized.slice(match[0].length));
+
+  if (raw === 'mme' || raw === 'madame') {
+    return { civilite: 'Mme', cleanFirstName };
+  }
+
+  if (raw === 'mlle' || raw === 'mademoiselle') {
+    return { civilite: 'Mlle', cleanFirstName };
+  }
+
+  return { civilite: 'Mr', cleanFirstName };
+}
+
+function buildFormalRecipient(guestData: GuestData) {
+  if (guestData.attendanceType === 'couple') {
+    const primary = normalizeWhitespace(`${guestData.firstName || ''} ${guestData.lastName || ''}`.replace(/^\s*couple\b\s*/i, ''));
+    const partner = normalizeWhitespace(`${guestData.partnerFirstName || ''} ${guestData.partnerLastName || ''}`);
+    const names = partner ? `${primary} & ${partner}` : primary;
+    return normalizeWhitespace(`Couple ${names}`);
+  }
+
+  const { civilite, cleanFirstName } = extractCivilite(guestData.firstName || '');
+  const fullName = normalizeWhitespace(`${cleanFirstName} ${guestData.lastName || ''}`);
+  return civilite ? `${civilite} ${fullName}` : fullName;
+}
+
 export const generatePdfInvitation = async (
   guestData: GuestData,
   language: Language = 'en'
@@ -96,6 +135,7 @@ export const generatePdfInvitation = async (
     guestData.attendanceType === 'couple' && partnerGuestFullName
       ? `${primaryGuestFullName} & ${partnerGuestFullName}`
       : primaryGuestFullName;
+  const formalRecipient = buildFormalRecipient(guestData);
 
   const checkInUrl = buildCheckInUrl(invitationCode, verificationHash, invitedGuestsText, guestCount);
   const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl, {
@@ -165,8 +205,12 @@ export const generatePdfInvitation = async (
         <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, #d4af37);"></div>
       </div>
 
-      <p style="font-size: 13px; color: #efe0b5; line-height: 1.7; margin: 0 0 6px 0; font-style: italic; max-width: 500px; font-family: Georgia, serif;">
-        ${escapeHtml(localize(language, 'pdfFamiliesAnnounce'))}
+      <p style="font-size: 16px; color: #f8e7b5; margin: 0 0 8px 0; font-weight: bold; font-style: italic; font-family: Georgia, serif;">
+        ${escapeHtml(formalRecipient)}
+      </p>
+
+      <p style="font-size: 12.5px; color: #efe0b5; line-height: 1.7; margin: 0 0 10px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
+        ${escapeHtml(localize(language, 'pdfFormalInvitationBody'))}
       </p>
 
       <div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid rgba(212,175,55,0.6); border-bottom: 1.5px solid rgba(212,175,55,0.6); background: rgba(0,0,0,0.35); width: 100%; max-width: 580px; box-sizing: border-box;">
@@ -177,14 +221,6 @@ export const generatePdfInvitation = async (
           Dimbi &nbsp;&#10022;&nbsp; Makanga
         </p>
       </div>
-
-      <p style="font-size: 12.5px; color: #e9d8a6; margin: 4px 0 8px 0; font-style: italic; font-family: Georgia, serif;">
-        ${escapeHtml(localize(language, 'pdfAndInvite'))}
-      </p>
-
-      <p style="font-family: Georgia, 'Palatino Linotype', serif; font-size: 26px; color: #f8e7b5; font-style: italic; font-weight: bold; margin: 0 0 8px 0; letter-spacing: 0.5px;">
-        ${escapeHtml(invitedGuestsText)}
-      </p>
 
       <p style="font-size: 12.5px; color: #e9d8a6; margin: 0 0 5px 0; font-style: italic; font-family: Georgia, serif;">
         ${escapeHtml(localize(language, 'pdfToCelebrateWith'))}
@@ -210,7 +246,10 @@ export const generatePdfInvitation = async (
 
       <div style="width: 100%; max-width: 580px; text-align: left;">
         <p style="font-size: 9.5px; letter-spacing: 4px; color: #d4af37; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
-          ${escapeHtml(localize(language, 'pdfEventSchedule'))}
+          ${escapeHtml(localize(language, 'pdfProgramAndDressCode'))}
+        </p>
+        <p style="font-size: 10px; color: #efe0b5; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;">
+          <strong>${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(weddingData.dressCode)}
         </p>
         ${scheduleHtml}
       </div>

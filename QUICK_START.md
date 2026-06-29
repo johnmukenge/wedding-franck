@@ -55,7 +55,7 @@ npm start
    - Background instrumental plays
 
 6. **RSVP with PDF Generation**
-   - Scroll to bottom and click "Open RSVP"
+   - Scroll to bottom and click "Invitation"
    - Choose "Yes, I will celebrate" or "Regretfully, I cannot attend"
    - If yes:
      - Enter your first name

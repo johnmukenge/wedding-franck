@@ -96,20 +96,6 @@ export const weddingData: WeddingData = {
       width: 851,
       height: 1280,
     },
-    {
-      id: 5,
-      alt: 'Wedding hall view 1',
-      src: '/media/salle1.jpg',
-      width: 843,
-      height: 1262,
-    },
-    {
-      id: 6,
-      alt: 'Wedding hall view 2',
-      src: '/media/salle2.jpg',
-      width: 2048,
-      height: 1366,
-    },
   ],
   audioUrl: '/media/wedding-song.m4a',
 };
@@ -127,7 +113,7 @@ export const traditionalWeddingData: WeddingData = {
     address: 'Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema',
   },
   heroImage: '/media/Franck%20et%20Charlie%202.jpeg',
-  dressCode: 'Noir doré',
+  dressCode: 'Black and gold',
   schedule: [
     {
       title: 'Arrivée des familles et présentations',
@@ -178,20 +164,6 @@ export const traditionalWeddingData: WeddingData = {
       src: '/media/Franck%20et%20Charlie.jpeg',
       width: 854,
       height: 1280,
-    },
-    {
-      id: 5,
-      alt: 'Wedding hall view 1',
-      src: '/media/salle1.jpg',
-      width: 843,
-      height: 1262,
-    },
-    {
-      id: 6,
-      alt: 'Wedding hall view 2',
-      src: '/media/salle2.jpg',
-      width: 2048,
-      height: 1366,
     },
   ],
   audioUrl: '/media/wedding-song.m4a',
