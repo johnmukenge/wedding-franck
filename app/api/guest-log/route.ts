@@ -8,6 +8,7 @@ type Language = 'en' | 'fr';
 type GuestLogVariant = 'religious' | 'traditional';
 
 type GuestData = {
+  title?: 'Mr' | 'Mme' | 'Mlle' | 'Couple';
   firstName: string;
   lastName: string;
   attendanceType: 'single' | 'couple';

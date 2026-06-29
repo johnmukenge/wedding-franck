@@ -154,6 +154,7 @@ export const saveGuestLogEntry = (
       const lastName = nameParts.length > 1 ? nameParts.slice(1).join(' ') : '';
 
       processedGuestData = {
+        title: 'Couple',
         firstName,
         lastName,
         attendanceType: 'couple',

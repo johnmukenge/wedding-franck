@@ -25,6 +25,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
   const { t, language } = useLanguage();
   const [step, setStep] = useState<'confirm' | 'form'>('confirm');
   const [formData, setFormData] = useState<GuestData>({
+    title: 'Mr',
     firstName: '',
     lastName: '',
     attendanceType: 'single',
@@ -49,6 +50,14 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
   const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleTitleChange = (title: NonNullable<GuestData['title']>) => {
+    setFormData((prev) => ({
+      ...prev,
+      title,
+      attendanceType: title === 'Couple' ? 'couple' : prev.attendanceType === 'couple' && prev.title === 'Couple' ? 'single' : prev.attendanceType,
+    }));
   };
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -85,6 +94,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
       // Reset form and close modal
       setStep('confirm');
       setFormData({
+        title: 'Mr',
         firstName: '',
         lastName: '',
         attendanceType: 'single',
@@ -104,6 +114,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
   const handleCancel = () => {
     setStep('confirm');
     setFormData({
+      title: 'Mr',
       firstName: '',
       lastName: '',
       attendanceType: 'single',
@@ -176,12 +187,34 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
             <form onSubmit={handleFormSubmit} className="mt-6 space-y-4">
               <div>
                 <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                  {t('formTitle')}
+                </label>
+                <div className="mt-2 grid grid-cols-2 gap-2">
+                  {(['Mr', 'Mme', 'Mlle', 'Couple'] as const).map((title) => (
+                    <button
+                      key={title}
+                      type="button"
+                      onClick={() => handleTitleChange(title)}
+                      className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
+                        formData.title === title
+                          ? 'border-rose-600 bg-rose-100 text-rose-800'
+                          : 'border-rose-200 text-rose-700 hover:bg-rose-50'
+                      }`}
+                    >
+                      {t(`formTitle${title}`)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
                   {t('formAttendanceType')}
                 </label>
                 <div className="mt-2 grid grid-cols-2 gap-2">
                   <button
                     type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'single' }))}
+                    onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'single', title: prev.title === 'Couple' ? 'Mr' : prev.title }))}
                     className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
                       formData.attendanceType === 'single'
                         ? 'border-rose-600 bg-rose-100 text-rose-800'
@@ -192,7 +225,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                   </button>
                   <button
                     type="button"
-                    onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'couple' }))}
+                    onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'couple', title: 'Couple' }))}
                     className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
                       formData.attendanceType === 'couple'
                         ? 'border-rose-600 bg-rose-100 text-rose-800'
@@ -203,7 +236,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                   </button>
                 </div>
                 <p className="mt-2 text-xs text-rose-600">
-                  💡 For couple: enter "Couple Name Surname" in the name field (e.g., "Couple Pippo Baudo") to auto-register both of you.
+                  {t('formCoupleHint')}
                 </p>
               </div>
 

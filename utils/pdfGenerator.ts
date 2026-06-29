@@ -7,6 +7,7 @@ import { weddingData } from '@/data';
 import { getTranslation, type Language } from '@/i18n/translations';
 
 export type GuestData = {
+  title?: 'Mr' | 'Mme' | 'Mlle' | 'Couple';
   firstName: string;
   lastName: string;
   attendanceType: 'single' | 'couple';
@@ -26,6 +27,8 @@ const scheduleTranslationKeys = [
   { title: 'reception', description: 'receptionDesc' },
   { title: 'firstDance', description: 'firstDanceDesc' },
 ] as const;
+
+const scheduleIcons = ['⛪', '📸', '🎉', '🎂'] as const;
 
 const getLocale = (language: Language) => {
   if (language === 'fr') return 'fr-FR';
@@ -61,11 +64,16 @@ function extractCivilite(firstName: string): { civilite: 'Mr' | 'Mme' | 'Mlle' |
 }
 
 function buildFormalRecipient(guestData: GuestData) {
-  if (guestData.attendanceType === 'couple') {
+  if (guestData.title === 'Couple' || guestData.attendanceType === 'couple') {
     const primary = normalizeWhitespace(`${guestData.firstName || ''} ${guestData.lastName || ''}`.replace(/^\s*couple\b\s*/i, ''));
     const partner = normalizeWhitespace(`${guestData.partnerFirstName || ''} ${guestData.partnerLastName || ''}`);
     const names = partner ? `${primary} & ${partner}` : primary;
     return normalizeWhitespace(`Couple ${names}`);
+  }
+
+  if (guestData.title) {
+    const fullName = normalizeWhitespace(`${guestData.firstName || ''} ${guestData.lastName || ''}`);
+    return `${guestData.title} ${fullName}`;
   }
 
   const { civilite, cleanFirstName } = extractCivilite(guestData.firstName || '');
@@ -80,6 +88,7 @@ export const generatePdfInvitation = async (
   const scheduleHtml = weddingData.schedule
     .map((event, index) => {
       const translationKeys = scheduleTranslationKeys[index];
+      const icon = scheduleIcons[index] || '✦';
       const translatedTitle = translationKeys
         ? localize(language, translationKeys.title)
         : event.title;
@@ -88,13 +97,18 @@ export const generatePdfInvitation = async (
         : event.description;
 
       return `
-        <div style="margin: 5px 0 9px 0;">
-          <p style="font-size: 11px; color: #d4af37; margin: 0; letter-spacing: 0.3px; font-family: Georgia, serif;">
-            <strong>${escapeHtml(event.time)}</strong> — ${escapeHtml(translatedTitle)}
-          </p>
-          <p style="font-size: 10px; color: #efe0b5; margin: 3px 0 0 0; line-height: 1.35; font-family: Georgia, serif;">
-            ${escapeHtml(translatedDescription)}
-          </p>
+        <div style="margin: 8px 0 10px 0; padding: 10px 12px; border: 1px solid rgba(212,175,55,0.22); border-radius: 14px; background: rgba(255,255,255,0.03);">
+          <div style="display: flex; align-items: flex-start; gap: 10px;">
+            <span style="font-size: 18px; line-height: 1; width: 24px; text-align: center;">${icon}</span>
+            <div>
+              <p style="font-size: 11px; color: #d4af37; margin: 0; letter-spacing: 0.3px; font-family: Georgia, serif;">
+                <strong>${escapeHtml(event.time)}</strong> — ${escapeHtml(translatedTitle)}
+              </p>
+              <p style="font-size: 10px; color: #efe0b5; margin: 3px 0 0 0; line-height: 1.35; font-family: Georgia, serif;">
+                ${escapeHtml(translatedDescription)}
+              </p>
+            </div>
+          </div>
         </div>
       `;
     })
@@ -121,6 +135,7 @@ export const generatePdfInvitation = async (
   const invitationCode = buildInvitationCode();
   const verificationHash = await buildVerificationHash({
     firstName: guestData.firstName,
+    title: guestData.title,
     lastName: guestData.lastName,
     attendanceType: guestData.attendanceType,
     partnerFirstName: guestData.partnerFirstName,
@@ -222,21 +237,27 @@ export const generatePdfInvitation = async (
         </p>
       </div>
 
-      <p style="font-size: 12.5px; color: #e9d8a6; margin: 0 0 5px 0; font-style: italic; font-family: Georgia, serif;">
-        ${escapeHtml(localize(language, 'pdfToCelebrateWith'))}
-      </p>
-
-      <p style="font-size: 15px; color: #f8e7b5; margin: 0 0 4px 0; text-transform: capitalize; font-family: Georgia, serif;">
-        ${escapeHtml(formattedWeddingDate)}
-      </p>
-
-      <p style="font-size: 12.5px; color: #efe0b5; margin: 2px 0; font-weight: bold; font-family: Georgia, serif;">
-        ${escapeHtml(weddingData.venue.name)}
-      </p>
-
-      <p style="font-size: 10.5px; color: #d7c38a; margin: 2px 0 10px 0; font-family: Georgia, serif;">
-        ${escapeHtml(weddingData.venue.address)}
-      </p>
+      <div style="width: 100%; max-width: 580px; display: grid; grid-template-columns: 1fr; gap: 10px; margin: 6px 0 10px 0;">
+        <div style="border: 1px solid rgba(212,175,55,0.25); border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.03); text-align: left;">
+          <p style="margin: 0 0 4px 0; color: #d4af37; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+            📅 ${escapeHtml(localize(language, 'date'))}
+          </p>
+          <p style="margin: 0; color: #f8e7b5; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
+            ${escapeHtml(formattedWeddingDate)}
+          </p>
+        </div>
+        <div style="border: 1px solid rgba(212,175,55,0.25); border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.03); text-align: left;">
+          <p style="margin: 0 0 4px 0; color: #d4af37; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+            📍 ${escapeHtml(localize(language, 'venue'))}
+          </p>
+          <p style="margin: 0; color: #f8e7b5; font-size: 12.5px; font-weight: bold; font-family: Georgia, serif;">
+            ${escapeHtml(weddingData.venue.name)}
+          </p>
+          <p style="margin: 4px 0 0 0; color: #d7c38a; font-size: 10.5px; line-height: 1.5; font-family: Georgia, serif;">
+            ${escapeHtml(weddingData.venue.address)}
+          </p>
+        </div>
+      </div>
 
       <div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin: 8px 0 12px;">
         <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #d4af37);"></div>
@@ -249,7 +270,7 @@ export const generatePdfInvitation = async (
           ${escapeHtml(localize(language, 'pdfProgramAndDressCode'))}
         </p>
         <p style="font-size: 10px; color: #efe0b5; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;">
-          <strong>${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(weddingData.dressCode)}
+          <strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(weddingData.dressCode)}
         </p>
         ${scheduleHtml}
       </div>
