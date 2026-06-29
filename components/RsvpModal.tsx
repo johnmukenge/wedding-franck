@@ -125,37 +125,37 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
   };
 
   return (
-    <div className="fixed inset-0 z-50 grid place-items-center bg-rose-950/50 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-md rounded-3xl bg-white p-8 shadow-xl fade-in-up">
+    <div className="fixed inset-0 z-50 grid place-items-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="w-full max-w-md max-h-[90vh] overflow-y-auto rounded-3xl bg-white p-6 shadow-xl fade-in-up">
         {step === 'confirm' ? (
           <>
-            <h3 className="font-serif text-2xl text-rose-950">{t('confirmPresence')}</h3>
+            <h3 className="font-serif text-2xl text-zinc-900">{t('confirmPresence')}</h3>
 
             <div className="mt-8 flex flex-col gap-3">
               <button
                 type="button"
-                className="rounded-full bg-rose-700 px-6 py-3 text-sm font-semibold text-white transition hover:bg-rose-800"
+                className="rounded-full bg-black px-6 py-3 text-sm font-semibold text-white transition hover:bg-zinc-800"
                 onClick={handleConfirmYes}
               >
                 {t('confirmYes')}
               </button>
               <button
                 type="button"
-                className="rounded-full border border-rose-200 px-6 py-3 text-sm font-semibold text-rose-800 transition hover:bg-rose-50"
+                className="rounded-full border border-zinc-300 px-6 py-3 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100"
                 onClick={handleConfirmNo}
               >
                 {t('confirmNo')}
               </button>
               <button
                 type="button"
-                className="mt-2 rounded-full border border-rose-100 px-6 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-50"
+                className="mt-2 rounded-full border border-zinc-300 px-6 py-2 text-xs font-semibold text-zinc-700 transition hover:bg-zinc-100"
                 onClick={handleCancel}
               >
                 {t('formCancel')}
               </button>
               <button
                 type="button"
-                className="rounded-full border border-rose-200 px-6 py-2 text-xs font-semibold text-rose-800 transition hover:bg-rose-50"
+                className="rounded-full border border-zinc-300 px-6 py-2 text-xs font-semibold text-zinc-800 transition hover:bg-zinc-100"
                 onClick={async () => {
                   if (!hasGuestLogAccess(variant)) {
                     const code = window.prompt(t('guestRegistryAccessPrompt'));
@@ -179,26 +179,26 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
           </>
         ) : (
           <>
-            <h3 className="font-serif text-2xl text-rose-950">{t('rsvp')}</h3>
-            <p className="mt-2 text-sm text-rose-800">
+            <h3 className="font-serif text-2xl text-zinc-900">{t('rsvp')}</h3>
+            <p className="mt-2 text-sm text-zinc-700">
               {t('yourPresence')} {coupleName}.
             </p>
 
             <form onSubmit={handleFormSubmit} className="mt-6 space-y-4">
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                   {t('formTitle')}
                 </label>
-                <div className="mt-2 grid grid-cols-2 gap-2">
+                <div className="mt-2 flex flex-wrap gap-2">
                   {(['Mr', 'Mme', 'Mlle', 'Couple'] as const).map((title) => (
                     <button
                       key={title}
                       type="button"
                       onClick={() => handleTitleChange(title)}
-                      className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
+                      className={`rounded-full border px-3 py-1.5 text-xs font-semibold transition ${
                         formData.title === title
-                          ? 'border-rose-600 bg-rose-100 text-rose-800'
-                          : 'border-rose-200 text-rose-700 hover:bg-rose-50'
+                          ? 'border-zinc-900 bg-zinc-900 text-white'
+                          : 'border-zinc-300 text-zinc-700 hover:bg-zinc-100'
                       }`}
                     >
                       {t(`formTitle${title}`)}
@@ -208,7 +208,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                   {t('formAttendanceType')}
                 </label>
                 <div className="mt-2 grid grid-cols-2 gap-2">
@@ -217,8 +217,8 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                     onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'single', title: prev.title === 'Couple' ? 'Mr' : prev.title }))}
                     className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
                       formData.attendanceType === 'single'
-                        ? 'border-rose-600 bg-rose-100 text-rose-800'
-                        : 'border-rose-200 text-rose-700 hover:bg-rose-50'
+                        ? 'border-zinc-900 bg-zinc-900 text-white'
+                        : 'border-zinc-300 text-zinc-700 hover:bg-zinc-100'
                     }`}
                   >
                     {t('formSingle')}
@@ -228,20 +228,20 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                     onClick={() => setFormData((prev) => ({ ...prev, attendanceType: 'couple', title: 'Couple' }))}
                     className={`rounded-lg border px-4 py-2 text-sm font-semibold transition ${
                       formData.attendanceType === 'couple'
-                        ? 'border-rose-600 bg-rose-100 text-rose-800'
-                        : 'border-rose-200 text-rose-700 hover:bg-rose-50'
+                        ? 'border-zinc-900 bg-zinc-900 text-white'
+                        : 'border-zinc-300 text-zinc-700 hover:bg-zinc-100'
                     }`}
                   >
                     {t('formCouple')}
                   </button>
                 </div>
-                <p className="mt-2 text-xs text-rose-600">
+                <p className="mt-2 text-xs text-zinc-600">
                   {t('formCoupleHint')}
                 </p>
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                   {t('formName')}
                 </label>
                 <input
@@ -249,13 +249,13 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleFormChange}
-                  className="mt-1 w-full rounded-lg border border-rose-200 px-4 py-2 text-sm focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                  className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-black placeholder:text-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                   placeholder="Franck"
                 />
               </div>
 
               <div>
-                <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                   {t('formFamilyName')}
                 </label>
                 <input
@@ -263,7 +263,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                   name="lastName"
                   value={formData.lastName}
                   onChange={handleFormChange}
-                  className="mt-1 w-full rounded-lg border border-rose-200 px-4 py-2 text-sm focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                  className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-black placeholder:text-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                   placeholder="Dupont"
                 />
               </div>
@@ -271,7 +271,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
               {formData.attendanceType === 'couple' && !isCoupleShortcutInput && (
                 <>
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                    <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                       {t('formPartnerName')}
                     </label>
                     <input
@@ -279,13 +279,13 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                       name="partnerFirstName"
                       value={formData.partnerFirstName || ''}
                       onChange={handleFormChange}
-                      className="mt-1 w-full rounded-lg border border-rose-200 px-4 py-2 text-sm focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                      className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-black placeholder:text-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                       placeholder="Charly"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold uppercase tracking-wide text-rose-700">
+                    <label className="block text-xs font-semibold uppercase tracking-wide text-zinc-700">
                       {t('formPartnerFamilyName')}
                     </label>
                     <input
@@ -293,7 +293,7 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                       name="partnerLastName"
                       value={formData.partnerLastName || ''}
                       onChange={handleFormChange}
-                      className="mt-1 w-full rounded-lg border border-rose-200 px-4 py-2 text-sm focus:border-rose-400 focus:outline-none focus:ring-2 focus:ring-rose-200"
+                      className="mt-1 w-full rounded-lg border border-zinc-300 bg-white px-4 py-2 text-sm text-black placeholder:text-zinc-500 focus:border-zinc-700 focus:outline-none focus:ring-2 focus:ring-zinc-200"
                       placeholder="Mukendi"
                     />
                   </div>
@@ -304,14 +304,14 @@ export default function RsvpModal({ isOpen, onClose, coupleName, variant = 'reli
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="flex-1 rounded-full bg-rose-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-rose-800 disabled:opacity-50"
+                  className="flex-1 rounded-full bg-black px-4 py-2 text-sm font-semibold text-white transition hover:bg-zinc-800 disabled:opacity-50"
                 >
                   {isSubmitting ? t('formGenerating') : t('formSubmit')}
                 </button>
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="flex-1 rounded-full border border-rose-200 px-4 py-2 text-sm font-semibold text-rose-800 transition hover:bg-rose-50"
+                  className="flex-1 rounded-full border border-zinc-300 px-4 py-2 text-sm font-semibold text-zinc-800 transition hover:bg-zinc-100"
                 >
                   {t('formCancel')}
                 </button>
