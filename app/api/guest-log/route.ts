@@ -117,7 +117,9 @@ const getGuestLogConfig = (variant: GuestLogVariant = DEFAULT_VARIANT): GuestLog
   };
 };
 
-const useBlob = () => Boolean(process.env.BLOB_READ_WRITE_TOKEN);
+const useBlob = () =>
+  Boolean(process.env.BLOB_READ_WRITE_TOKEN) ||
+  Boolean(process.env.VERCEL && process.env.BLOB_STORE_ID);
 
 const resolveLocalFilePath = (variant: GuestLogVariant = DEFAULT_VARIANT) => {
   const config = getGuestLogConfig(variant);
@@ -128,13 +130,12 @@ const resolveLocalFilePath = (variant: GuestLogVariant = DEFAULT_VARIANT) => {
 };
 
 async function readEntriesFromBlob(variant: GuestLogVariant = DEFAULT_VARIANT): Promise<GuestLogEntry[]> {
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token) return [];
+  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
 
   try {
     const blob = await get(getGuestLogConfig(variant).blobFileName, {
       access: 'private',
-      token,
+      ...(token ? { token } : {}),
       useCache: false,
     });
 
@@ -149,15 +150,14 @@ async function readEntriesFromBlob(variant: GuestLogVariant = DEFAULT_VARIANT): 
 }
 
 async function writeEntriesToBlob(entries: GuestLogEntry[], variant: GuestLogVariant = DEFAULT_VARIANT) {
-  const token = process.env.BLOB_READ_WRITE_TOKEN;
-  if (!token) throw new Error('Missing BLOB_READ_WRITE_TOKEN');
+  const token = process.env.BLOB_READ_WRITE_TOKEN?.trim();
 
   await put(getGuestLogConfig(variant).blobFileName, JSON.stringify(entries, null, 2), {
     access: 'private',
     addRandomSuffix: false,
     allowOverwrite: true,
     contentType: 'application/json',
-    token,
+    ...(token ? { token } : {}),
   });
 }
 
