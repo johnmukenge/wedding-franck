@@ -10,7 +10,6 @@ import RsvpSection from '@/components/RsvpSection';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import GuestCheckInPanel from '@/components/GuestCheckInPanel';
 import CheckInAdminPanel from '@/components/CheckInAdminPanel';
-import WeddingTypeSelector from '@/components/WeddingTypeSelector';
 import { useLanguage } from '@/context/LanguageContext';
 
 const getLocale = (language: 'en' | 'fr') => {
@@ -40,7 +39,6 @@ export default function PageContent() {
   return (
     <main className="bg-gradient-to-b from-[#090909] via-[#0f0f0f] to-[#151515] text-[#f5e7c0]">
       <LanguageSwitcher />
-      <WeddingTypeSelector currentType="religious" />
       <Suspense fallback={null}>
         <GuestCheckInPanel />
       </Suspense>
