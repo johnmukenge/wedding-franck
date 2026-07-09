@@ -8,6 +8,7 @@ import AudioPlayer from '@/components/AudioPlayer';
 import RsvpSection from '@/components/RsvpSection';
 import GuestCheckInPanel from '@/components/GuestCheckInPanel';
 import CheckInAdminPanel from '@/components/CheckInAdminPanel';
+import WeddingTypeSelector from '@/components/WeddingTypeSelector';
 import { getTranslation } from '@/i18n/translations';
 
 const getLocale = (language: 'en' | 'fr') => {
@@ -42,6 +43,7 @@ export default function TraditionalPageContent() {
 
   return (
     <main className="bg-[#fbf4ea] text-amber-950">
+      <WeddingTypeSelector currentType="traditional" />
       <section className="relative overflow-hidden border-b border-amber-200/70">
         <div className="absolute inset-0 opacity-95" style={motifStyle} aria-hidden />
         <div className="absolute inset-0 bg-gradient-to-b from-white/40 via-transparent to-[#f6e7d4]/75" aria-hidden />
