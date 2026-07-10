@@ -55,12 +55,17 @@ export default function TraditionalPageContent() {
               <p className="mt-4 text-sm font-semibold tracking-wide text-sky-700">
                 {t('traditionalSalutationLine')}
               </p>
-              <h1 className="mt-6 font-serif text-5xl leading-tight text-sky-950 sm:text-6xl lg:text-7xl">
-                Franck & Charly
-              </h1>
-              <p className="mt-5 max-w-3xl text-base leading-8 text-sky-900/85 sm:text-lg">
+              <p className="mt-6 max-w-3xl text-base leading-8 text-sky-900/85 sm:text-lg">
                 {t('traditionalCoutumierIntro')}
               </p>
+              <div className="mt-4 max-w-3xl rounded-[1.5rem] border border-sky-100 bg-white/85 px-6 py-5 shadow-sm backdrop-blur">
+                <p className="font-serif text-4xl font-bold text-sky-950 sm:text-5xl lg:text-6xl">
+                  Franck &amp; Charly
+                </p>
+                <p className="mt-2 text-sm font-semibold uppercase tracking-[0.38em] text-sky-600 sm:text-base">
+                  Dimbi ✦ Makanga
+                </p>
+              </div>
               <p className="mt-4 max-w-3xl text-base leading-8 text-sky-900/85 sm:text-lg">
                 {t('traditionalCoutumierOutro')}
               </p>
@@ -120,7 +125,18 @@ export default function TraditionalPageContent() {
           <p className="text-xs uppercase tracking-[0.25em] text-sky-600">{t('untilWeDoIT')}</p>
           <h2 className="mt-3 font-serif text-3xl text-sky-950 sm:text-4xl">{t('countdown')}</h2>
           <p className="mt-4 text-sm leading-7 text-sky-800">
-            {t('traditionalCoutumierIntro')} {t('traditionalCoutumierOutro')}
+            {t('traditionalCoutumierIntro')}
+          </p>
+          <div className="mt-5 rounded-[1.5rem] border border-sky-100 bg-gradient-to-r from-white to-lime-50 px-5 py-4 text-center shadow-sm">
+            <p className="font-serif text-3xl font-bold text-sky-950 sm:text-4xl">
+              Franck &amp; Charly
+            </p>
+            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.35em] text-sky-600 sm:text-sm">
+              Dimbi ✦ Makanga
+            </p>
+          </div>
+          <p className="mt-4 text-sm leading-7 text-sky-800">
+            {t('traditionalCoutumierOutro')}
           </p>
           <div className="mt-8">
             <Countdown targetDate={traditionalWeddingData.weddingDate} />

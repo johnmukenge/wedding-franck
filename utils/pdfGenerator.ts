@@ -310,20 +310,32 @@ export const generatePdfInvitation = async (
 
       ${
         variant === 'traditional'
-          ? `<p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 12px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
+          ? `<div style="margin: 6px 0 12px 0; padding: 16px 32px 12px; border-top: 1.5px solid ${theme.accentSoft}; border-bottom: 1.5px solid ${theme.accentSoft}; background: ${theme.recipientBg}; width: 100%; max-width: 580px; box-sizing: border-box;">
+              <div style="line-height: 1.1; margin-bottom: 8px; white-space: nowrap; text-align: center;">
+                <span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Franck</span><span style="font-family: Georgia, serif; font-size: 40px; color: #84cc16; font-style: italic; padding: 0 18px; vertical-align: middle;">&amp;</span><span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Charly</span>
+              </div>
+              <p style="font-size: 10px; letter-spacing: 5.5px; color: ${theme.accent}; margin: 0; text-transform: uppercase; font-family: Georgia, serif; text-align: center;">
+                Dimbi &nbsp;&#10022;&nbsp; Makanga
+              </p>
+            </div>
+            <p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 12px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
               ${escapeHtml(localize(language, 'traditionalCoutumierOutro'))}
             </p>`
           : ''
       }
 
-      <div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid ${theme.accentSoft}; border-bottom: 1.5px solid ${theme.accentSoft}; background: ${theme.recipientBg}; width: 100%; max-width: 580px; box-sizing: border-box;">
-        <div style="line-height: 1.1; margin-bottom: 8px; white-space: nowrap;">
-          <span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Franck</span><span style="font-family: Georgia, serif; font-size: 40px; color: ${variant === 'traditional' ? '#84cc16' : theme.accent}; font-style: italic; padding: 0 18px; vertical-align: middle;">&amp;</span><span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Charly</span>
-        </div>
-        <p style="font-size: 10px; letter-spacing: 5.5px; color: ${theme.accent}; margin: 0; text-transform: uppercase; font-family: Georgia, serif;">
-          Dimbi &nbsp;&#10022;&nbsp; Makanga
-        </p>
-      </div>
+      ${
+        variant === 'traditional'
+          ? ''
+          : `<div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid ${theme.accentSoft}; border-bottom: 1.5px solid ${theme.accentSoft}; background: ${theme.recipientBg}; width: 100%; max-width: 580px; box-sizing: border-box;">
+              <div style="line-height: 1.1; margin-bottom: 8px; white-space: nowrap;">
+                <span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Franck</span><span style="font-family: Georgia, serif; font-size: 40px; color: ${theme.accent}; font-style: italic; padding: 0 18px; vertical-align: middle;">&amp;</span><span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Charly</span>
+              </div>
+              <p style="font-size: 10px; letter-spacing: 5.5px; color: ${theme.accent}; margin: 0; text-transform: uppercase; font-family: Georgia, serif;">
+                Dimbi &nbsp;&#10022;&nbsp; Makanga
+              </p>
+            </div>`
+      }
 
       <div style="width: 100%; max-width: 580px; display: grid; grid-template-columns: 1fr; gap: 10px; margin: 6px 0 10px 0;">
         <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
