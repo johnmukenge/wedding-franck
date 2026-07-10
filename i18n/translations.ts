@@ -102,9 +102,11 @@ export const translations: Translations = {
     dancesDesc: 'Congolese folk dances and music from Congo.',
     feast: 'Traditional Feast',
     feastDesc: 'Meal with traditional dishes and family celebrations.',
-    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple ...',
-    traditionalCoutumierBody:
-      'The Dimbi and Makanga families are immensely happy to invite you to the celebration of the customary wedding of their children: Franck Dimbi and Charlie Makanga, and to share this joyful moment in their company.',
+    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple',
+    traditionalCoutumierIntro:
+      'The Dimbi and Makanga families are immensely happy to invite you to the celebration of the customary wedding of their children:',
+    traditionalCoutumierOutro:
+      'and to share this joyful moment in their company.',
     traditionalProgramTitle: 'Program',
     traditionalProgramLine:
       'Saturday, 25 July 2026 at 7:00 PM — Salle de fête des Frères des Écoles Chrétiennes, Av. Lukengo No.07, Ref: Stade Vélodrome, opposite Saint Georges school.',
@@ -208,9 +210,11 @@ export const translations: Translations = {
     dancesDesc: 'Danses traditionnelles, démonstrations de joie et musiques folkloriques.',
     feast: 'Festin Traditionnel',
     feastDesc: 'Repas avec les mets traditionnels et réjouissances en famille.',
-    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple ......',
-    traditionalCoutumierBody:
-      'Les familles Dimbi et Makanga ont l’immense joie de vous convier à la célébration du mariage coutumier de leurs enfants : Franck Dimbi et Charlie Makanga et à partager ce moment de joie en leur compagnie.',
+    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple',
+    traditionalCoutumierIntro:
+      'Les familles Dimbi et Makanga ont l’immense joie de vous convier à la célébration du mariage coutumier de leurs enfants :',
+    traditionalCoutumierOutro:
+      'et à partager ce moment de joie en leur compagnie.',
     traditionalProgramTitle: 'Programme',
     traditionalProgramLine:
       'Samedi 25 juillet 2026 à 19h. Salle de fête des Frères des Écoles Chrétiennes, Av. Lukengo N°07, Réf : Stade Vélodrome, en face de l’école Saint Georges.',

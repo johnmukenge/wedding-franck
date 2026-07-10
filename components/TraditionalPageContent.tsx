@@ -58,8 +58,11 @@ export default function TraditionalPageContent() {
               <h1 className="mt-6 font-serif text-5xl leading-tight text-sky-950 sm:text-6xl lg:text-7xl">
                 Franck & Charly
               </h1>
-              <p className="mt-5 max-w-xl text-base leading-8 text-sky-900/85 sm:text-lg">
-                {t('traditionalCoutumierBody')}
+              <p className="mt-5 max-w-3xl text-base leading-8 text-sky-900/85 sm:text-lg">
+                {t('traditionalCoutumierIntro')}
+              </p>
+              <p className="mt-4 max-w-3xl text-base leading-8 text-sky-900/85 sm:text-lg">
+                {t('traditionalCoutumierOutro')}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -117,7 +120,7 @@ export default function TraditionalPageContent() {
           <p className="text-xs uppercase tracking-[0.25em] text-sky-600">{t('untilWeDoIT')}</p>
           <h2 className="mt-3 font-serif text-3xl text-sky-950 sm:text-4xl">{t('countdown')}</h2>
           <p className="mt-4 text-sm leading-7 text-sky-800">
-            {t('traditionalCoutumierBody')}
+            {t('traditionalCoutumierIntro')} {t('traditionalCoutumierOutro')}
           </p>
           <div className="mt-8">
             <Countdown targetDate={traditionalWeddingData.weddingDate} />

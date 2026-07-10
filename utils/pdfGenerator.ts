@@ -303,10 +303,18 @@ export const generatePdfInvitation = async (
       <p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 10px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
         ${escapeHtml(
           variant === 'traditional'
-            ? localize(language, 'traditionalCoutumierBody')
+            ? localize(language, 'traditionalCoutumierIntro')
             : localize(language, 'pdfFormalInvitationBody')
         )}
       </p>
+
+      ${
+        variant === 'traditional'
+          ? `<p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 12px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
+              ${escapeHtml(localize(language, 'traditionalCoutumierOutro'))}
+            </p>`
+          : ''
+      }
 
       <div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid ${theme.accentSoft}; border-bottom: 1.5px solid ${theme.accentSoft}; background: ${theme.recipientBg}; width: 100%; max-width: 580px; box-sizing: border-box;">
         <div style="line-height: 1.1; margin-bottom: 8px; white-space: nowrap;">
