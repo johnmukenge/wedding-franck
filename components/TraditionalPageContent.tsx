@@ -56,11 +56,14 @@ export default function TraditionalPageContent() {
               <p className="inline-flex rounded-full border border-sky-200 bg-white/80 px-4 py-1 text-xs uppercase tracking-[0.3em] text-sky-700 shadow-sm backdrop-blur">
                 Save the date · Mariage traditionnel congolais
               </p>
+              <p className="mt-4 text-sm font-semibold tracking-wide text-sky-700">
+                {t('traditionalSalutationLine')}
+              </p>
               <h1 className="mt-6 font-serif text-5xl leading-tight text-sky-950 sm:text-6xl lg:text-7xl">
                 Franck & Charly
               </h1>
               <p className="mt-5 max-w-xl text-base leading-8 text-sky-900/85 sm:text-lg">
-                Une soirée traditionnelle élégante à Kinshasa, pensée autour d’une ambiance lumineuse en blanc, bleu, vert citron et jaune.
+                {t('traditionalCoutumierBody')}
               </p>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -84,7 +87,7 @@ export default function TraditionalPageContent() {
                   <h2 className="mt-4 font-serif text-4xl text-sky-950 sm:text-5xl">Save the date</h2>
                   <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-lime-500 to-transparent" />
                   <p className="mt-6 text-base uppercase tracking-[0.28em] text-lime-700">25 juillet 2026</p>
-                  <p className="mt-2 text-sm leading-7 text-sky-900/90">Salle Food Market · Ngaliema · Kinshasa</p>
+                  <p className="mt-2 text-sm leading-7 text-sky-900/90">{traditionalWeddingData.venue.name} · Kinshasa</p>
                   <div className="mt-8 grid grid-cols-3 gap-3 text-center text-xs uppercase tracking-[0.2em] text-sky-800">
                     <div className="rounded-2xl bg-white py-4 shadow-sm ring-1 ring-sky-100">
                       <span className="block text-2xl font-serif text-sky-950">25</span>
@@ -119,7 +122,7 @@ export default function TraditionalPageContent() {
             <p className="text-xs uppercase tracking-[0.25em] text-sky-600">{t('untilWeDoIT')}</p>
             <h2 className="mt-3 font-serif text-3xl text-sky-950 sm:text-4xl">{t('countdown')}</h2>
             <p className="mt-4 text-sm leading-7 text-sky-800">
-              Rendez-vous le samedi 25 juillet 2026 à 19h00 pour une célébration traditionnelle intime, lumineuse et festive.
+              {t('traditionalProgramLine')}
             </p>
             <div className="mt-8">
               <Countdown targetDate={traditionalWeddingData.weddingDate} />
@@ -163,8 +166,9 @@ export default function TraditionalPageContent() {
             <span className="font-semibold text-sky-700">{t('time')}:</span> {formattedTime}
           </p>
           <p className="mt-2">
-            <span className="font-semibold text-sky-700">{t('dressCode')}:</span> {traditionalWeddingData.dressCode}
+            <span className="font-semibold text-sky-700">{t('traditionalGenerosityTitle')}:</span> {t('traditionalGenerosityBody')}
           </p>
+          <p className="mt-3 text-center font-semibold text-sky-700">{t('traditionalWelcome')}</p>
         </div>
       </section>
 

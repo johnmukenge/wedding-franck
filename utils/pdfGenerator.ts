@@ -126,6 +126,19 @@ function buildFormalRecipient(guestData: GuestData) {
   return civilite ? `${civilite} ${fullName}` : fullName;
 }
 
+function getTraditionalSalutationPrefix(guestData: GuestData): 'Mr' | 'Mme' | 'Mlle' | 'Couple' {
+  if (guestData.title === 'Couple' || guestData.attendanceType === 'couple') {
+    return 'Couple';
+  }
+
+  if (guestData.title === 'Mr' || guestData.title === 'Mme' || guestData.title === 'Mlle') {
+    return guestData.title;
+  }
+
+  const { civilite } = extractCivilite(guestData.firstName || '');
+  return civilite || 'Mr';
+}
+
 export const generatePdfInvitation = async (
   guestData: GuestData,
   language: Language = 'en',
@@ -271,6 +284,12 @@ export const generatePdfInvitation = async (
         ${escapeHtml(variant === 'traditional' ? 'Invitation Mariage Traditionnel' : localize(language, 'pdfInvitationTitle'))}
       </p>
 
+      ${
+        variant === 'traditional'
+          ? `<p style="font-size: 12px; color: ${theme.accent}; margin: 0 0 10px 0; font-family: Georgia, serif; font-weight: 600;">${escapeHtml(`${getTraditionalSalutationPrefix(guestData)}`)}</p>`
+          : ''
+      }
+
       <div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin-bottom: 16px;">
         <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, ${theme.accent});"></div>
         <span style="color: ${theme.accent}; font-size: 14px; margin: 0 14px;">✦</span>
@@ -284,9 +303,7 @@ export const generatePdfInvitation = async (
       <p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 10px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
         ${escapeHtml(
           variant === 'traditional'
-            ? language === 'fr'
-              ? 'C’est avec une immense joie que les familles DIMBI et MAKANGA ont l’honneur de vous convier au mariage traditionnel de leurs enfants Franck Dimbi et Charlie Makanga, le 25 juillet 2026 à 19h00 à Kinshasa.'
-              : 'With immense joy, the DIMBI and MAKANGA families have the honor to invite you to the traditional wedding of their children Franck Dimbi and Charlie Makanga on 25 July 2026 at 7:00 PM in Kinshasa.'
+            ? localize(language, 'traditionalCoutumierBody')
             : localize(language, 'pdfFormalInvitationBody')
         )}
       </p>
@@ -338,12 +355,29 @@ export const generatePdfInvitation = async (
 
       <div style="width: 100%; max-width: 580px; text-align: left;">
         <p style="font-size: 9.5px; letter-spacing: 4px; color: ${theme.accent}; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
-          ${escapeHtml(localize(language, 'pdfProgramAndDressCode'))}
+          ${escapeHtml(variant === 'traditional' ? localize(language, 'traditionalProgramTitle') : localize(language, 'pdfProgramAndDressCode'))}
         </p>
-        <p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;">
-          <strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(eventData.dressCode)}
-        </p>
+        ${
+          variant === 'traditional'
+            ? `<p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; line-height: 1.45; font-family: Georgia, serif;">${escapeHtml(localize(language, 'traditionalProgramLine'))}</p>`
+            : `<p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;"><strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(eventData.dressCode)}</p>`
+        }
         ${scheduleHtml}
+        ${
+          variant === 'traditional'
+            ? `<div style="margin-top: 10px; padding: 10px 12px; border: 1px solid ${theme.accentSoft}; border-radius: 14px; background: ${theme.sectionBg};">
+                <p style="margin: 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-family: Georgia, serif;">
+                  ${escapeHtml(localize(language, 'traditionalGenerosityTitle'))}
+                </p>
+                <p style="margin: 4px 0 0 0; color: ${theme.textSecondary}; font-size: 10px; line-height: 1.45; font-family: Georgia, serif;">
+                  ${escapeHtml(localize(language, 'traditionalGenerosityBody'))}
+                </p>
+                <p style="margin: 7px 0 0 0; color: ${theme.accent}; font-size: 10px; font-weight: bold; text-align: center; font-family: Georgia, serif;">
+                  ${escapeHtml(localize(language, 'traditionalWelcome'))}
+                </p>
+              </div>`
+            : ''
+        }
       </div>
 
       <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 580px; border-top: 1px solid ${theme.accentSoft}; padding-top: 12px;">

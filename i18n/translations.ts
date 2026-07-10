@@ -102,6 +102,16 @@ export const translations: Translations = {
     dancesDesc: 'Congolese folk dances and music from Congo.',
     feast: 'Traditional Feast',
     feastDesc: 'Meal with traditional dishes and family celebrations.',
+    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple ...',
+    traditionalCoutumierBody:
+      'The Dimbi and Makanga families are immensely happy to invite you to the celebration of the customary wedding of their children: Franck Dimbi and Charlie Makanga, and to share this joyful moment in their company.',
+    traditionalProgramTitle: 'Program',
+    traditionalProgramLine:
+      'Saturday, 25 July 2026 at 7:00 PM — Salle de fête des Frères des Écoles Chrétiennes, Av. Lukengo No.07, Ref: Stade Vélodrome, opposite Saint Georges school.',
+    traditionalGenerosityTitle: 'Generosity',
+    traditionalGenerosityBody:
+      'Your presence by our side is the most beautiful gift. However, if you wish to express your affection with a present, we would be grateful if you could register it at the hall reception on the day of the ceremony.',
+    traditionalWelcome: 'Warm welcome.',
   },
   fr: {
     weddingInvitation: 'Invitation de Mariage',
@@ -198,6 +208,16 @@ export const translations: Translations = {
     dancesDesc: 'Danses traditionnelles, démonstrations de joie et musiques folkloriques du Congo.',
     feast: 'Festin Traditionnel',
     feastDesc: 'Repas avec les mets traditionnels et réjouissances en famille.',
+    traditionalSalutationLine: 'Mr/Mme/Mlle/Couple ......',
+    traditionalCoutumierBody:
+      'Les familles Dimbi et Makanga ont l’immense joie de vous convier à la célébration du mariage coutumier de leurs enfants : Franck Dimbi et Charlie Makanga et à partager ce moment de joie en leur compagnie.',
+    traditionalProgramTitle: 'Programme',
+    traditionalProgramLine:
+      'Samedi 25 juillet 2026 à 19h. Salle de fête des Frères des Écoles Chrétiennes, Av. Lukengo N°07, Réf : Stade Vélodrome, en face de l’école Saint Georges.',
+    traditionalGenerosityTitle: 'Générosité',
+    traditionalGenerosityBody:
+      'Votre présence à nos côtés constitue le plus beau des cadeaux. Toutefois, si vous souhaitez nous témoigner votre affection par un présent, nous vous serions reconnaissants de bien vouloir l’enregistrer à l’accueil de la salle le jour de la cérémonie.',
+    traditionalWelcome: 'Cordiale bienvenue',
   },
 };
 

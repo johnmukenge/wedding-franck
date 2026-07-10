@@ -39,9 +39,9 @@ export const weddingData: WeddingData = {
   },
   weddingDate: '2026-08-01T10:00:00+02:00',
   venue: {
-    name: 'Salle Food Market',
+    name: 'Salle de fête des Frères des Écoles Chrétiennes',
     city: 'Kinshasa, Democratic Republic of Congo',
-    address: 'Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema',
+    address: 'Av. Lukengo N°07, Réf. Stade Vélodrome, en face de l’école Saint Georges',
   },
   heroImage: '/media/Franck%20et%20Charlie.jpeg',
   dressCode: 'Noir doré',
