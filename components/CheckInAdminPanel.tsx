@@ -28,6 +28,7 @@ export default function CheckInAdminPanel({ variant = 'religious' }: CheckInAdmi
   const importRef = useRef<HTMLInputElement>(null);
 
   const isAdminMode = searchParams.get('mode') === 'admin';
+  const returnHref = variant === 'traditional' ? '/traditional' : '/';
 
   const refresh = useCallback(async () => {
     const entries = await getGuestLog(variant);
@@ -135,7 +136,7 @@ export default function CheckInAdminPanel({ variant = 'religious' }: CheckInAdmi
               Déverrouiller
             </button>
             <div className="mt-6">
-              <a href="/" className="text-xs text-rose-400 hover:text-rose-600">← Retour au site</a>
+              <a href={returnHref} className="text-xs text-rose-400 hover:text-rose-600">← Retour au site</a>
             </div>
           </div>
         ) : (
@@ -280,7 +281,7 @@ export default function CheckInAdminPanel({ variant = 'religious' }: CheckInAdmi
             <div className="mt-8 space-y-1 text-center text-xs text-rose-300">
               <p>Les RSVP sont désormais enregistrés côté serveur dans un fichier central.</p>
               <p>Conservez l&apos;export JSON comme sauvegarde de sécurité.</p>
-              <a href="/" className="mt-2 block text-rose-400 hover:text-rose-600">← Retour au site</a>
+              <a href={returnHref} className="mt-2 block text-rose-400 hover:text-rose-600">← Retour au site</a>
             </div>
           </>
         )}

@@ -3,8 +3,9 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import QRCode from 'qrcode';
-import { weddingData } from '@/data';
+import { traditionalWeddingData, weddingData } from '@/data';
 import { getTranslation, type Language } from '@/i18n/translations';
+import type { GuestLogVariant } from '@/utils/guestLog';
 
 export type GuestData = {
   title?: 'Mr' | 'Mme' | 'Mlle' | 'Couple';
@@ -21,14 +22,58 @@ export type InvitationMetadata = {
   verificationHash: string;
 };
 
-const scheduleTranslationKeys = [
+const religiousScheduleTranslationKeys = [
   { title: 'guestArrival', description: 'guestArrivalDesc' },
   { title: 'ceremony', description: 'ceremonyDesc' },
   { title: 'reception', description: 'receptionDesc' },
   { title: 'firstDance', description: 'firstDanceDesc' },
 ] as const;
 
-const scheduleIcons = ['⛪', '📸', '🎉', '🎂'] as const;
+const traditionalScheduleTranslationKeys = [
+  { title: 'familyArrival', description: 'familyArrivalDesc' },
+] as const;
+
+const religiousScheduleIcons = ['⛪', '📸', '🎉', '🎂'] as const;
+const traditionalScheduleIcons = ['🌿'] as const;
+
+const pdfTheme = {
+  religious: {
+    qrDark: '#101010',
+    qrLight: '#f5e7b6',
+    canvasBackground: '#0f0f0f',
+    pageBackground:
+      'radial-gradient(circle at 15% 15%, rgba(212,175,55,0.15), transparent 35%), radial-gradient(circle at 85% 25%, rgba(212,175,55,0.12), transparent 40%), linear-gradient(155deg, #050505 0%, #0f0f0f 55%, #161616 100%)',
+    border: '#d4af37',
+    inset: 'rgba(16,16,16,0.92)',
+    insetBorder: 'rgba(212,175,55,0.28)',
+    accent: '#d4af37',
+    accentSoft: 'rgba(212,175,55,0.25)',
+    textPrimary: '#f8e7b5',
+    textSecondary: '#efe0b5',
+    textMuted: '#d7c38a',
+    sectionBg: 'rgba(255,255,255,0.03)',
+    recipientBg: 'rgba(0,0,0,0.35)',
+    qrBorder: '#d4af37',
+  },
+  traditional: {
+    qrDark: '#0f3d91',
+    qrLight: '#ffffff',
+    canvasBackground: '#ffffff',
+    pageBackground:
+      'radial-gradient(circle at 12% 18%, rgba(59,130,246,0.18), transparent 34%), radial-gradient(circle at 82% 20%, rgba(163,230,53,0.2), transparent 36%), radial-gradient(circle at 25% 82%, rgba(250,204,21,0.18), transparent 30%), linear-gradient(160deg, #ffffff 0%, #f2fbff 55%, #fffde7 100%)',
+    border: '#1d4ed8',
+    inset: 'rgba(255,255,255,0.92)',
+    insetBorder: 'rgba(163,230,53,0.35)',
+    accent: '#1d4ed8',
+    accentSoft: 'rgba(29,78,216,0.16)',
+    textPrimary: '#082f49',
+    textSecondary: '#0f172a',
+    textMuted: '#365314',
+    sectionBg: 'rgba(255,255,255,0.78)',
+    recipientBg: 'linear-gradient(135deg, rgba(255,255,255,0.88) 0%, rgba(240,249,255,0.95) 55%, rgba(236,252,203,0.88) 100%)',
+    qrBorder: '#84cc16',
+  },
+} as const;
 
 const getLocale = (language: Language) => {
   if (language === 'fr') return 'fr-FR';
@@ -83,9 +128,16 @@ function buildFormalRecipient(guestData: GuestData) {
 
 export const generatePdfInvitation = async (
   guestData: GuestData,
-  language: Language = 'en'
+  language: Language = 'en',
+  variant: GuestLogVariant = 'religious'
 ): Promise<InvitationMetadata> => {
-  const scheduleHtml = weddingData.schedule
+  const eventData = variant === 'traditional' ? traditionalWeddingData : weddingData;
+  const theme = pdfTheme[variant];
+  const scheduleTranslationKeys =
+    variant === 'traditional' ? traditionalScheduleTranslationKeys : religiousScheduleTranslationKeys;
+  const scheduleIcons = variant === 'traditional' ? traditionalScheduleIcons : religiousScheduleIcons;
+
+  const scheduleHtml = eventData.schedule
     .map((event, index) => {
       const translationKeys = scheduleTranslationKeys[index];
       const icon = scheduleIcons[index] || '✦';
@@ -97,14 +149,14 @@ export const generatePdfInvitation = async (
         : event.description;
 
       return `
-        <div style="margin: 8px 0 10px 0; padding: 10px 12px; border: 1px solid rgba(212,175,55,0.22); border-radius: 14px; background: rgba(255,255,255,0.03);">
+        <div style="margin: 8px 0 10px 0; padding: 10px 12px; border: 1px solid ${theme.accentSoft}; border-radius: 14px; background: ${theme.sectionBg};">
           <div style="display: flex; align-items: flex-start; gap: 10px;">
             <span style="font-size: 18px; line-height: 1; width: 24px; text-align: center;">${icon}</span>
             <div>
-              <p style="font-size: 11px; color: #d4af37; margin: 0; letter-spacing: 0.3px; font-family: Georgia, serif;">
+              <p style="font-size: 11px; color: ${theme.accent}; margin: 0; letter-spacing: 0.3px; font-family: Georgia, serif;">
                 <strong>${escapeHtml(event.time)}</strong> — ${escapeHtml(translatedTitle)}
               </p>
-              <p style="font-size: 10px; color: #efe0b5; margin: 3px 0 0 0; line-height: 1.35; font-family: Georgia, serif;">
+              <p style="font-size: 10px; color: ${theme.textSecondary}; margin: 3px 0 0 0; line-height: 1.35; font-family: Georgia, serif;">
                 ${escapeHtml(translatedDescription)}
               </p>
             </div>
@@ -114,7 +166,8 @@ export const generatePdfInvitation = async (
     })
     .join('');
 
-  const formattedWeddingDate = new Date(weddingData.weddingDate).toLocaleDateString(
+  const eventDate = new Date(eventData.weddingDate);
+  const formattedWeddingDate = eventDate.toLocaleDateString(
     getLocale(language),
     {
       weekday: 'long',
@@ -123,6 +176,10 @@ export const generatePdfInvitation = async (
       year: 'numeric',
     }
   );
+  const formattedWeddingTime = eventDate.toLocaleTimeString(getLocale(language), {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
 
   const sanitizedFirst = guestData.firstName.replace(/[^a-z0-9]/gi, '');
   const sanitizedLast = guestData.lastName.replace(/[^a-z0-9]/gi, '');
@@ -130,7 +187,7 @@ export const generatePdfInvitation = async (
   const sanitizedPartnerLast = (guestData.partnerLastName || '').replace(/[^a-z0-9]/gi, '');
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const randomSuffix = Math.random().toString(36).slice(2, 8);
-  const fileName = `franck-charly-invitation-${language}-${sanitizedFirst}-${sanitizedLast}${sanitizedPartnerFirst ? `-${sanitizedPartnerFirst}-${sanitizedPartnerLast}` : ''}-${timestamp}-${randomSuffix}.pdf`;
+  const fileName = `franck-charly-${variant}-invitation-${language}-${sanitizedFirst}-${sanitizedLast}${sanitizedPartnerFirst ? `-${sanitizedPartnerFirst}-${sanitizedPartnerLast}` : ''}-${timestamp}-${randomSuffix}.pdf`;
 
   const invitationCode = buildInvitationCode();
   const verificationHash = await buildVerificationHash({
@@ -152,13 +209,13 @@ export const generatePdfInvitation = async (
       : primaryGuestFullName;
   const formalRecipient = buildFormalRecipient(guestData);
 
-  const checkInUrl = buildCheckInUrl(invitationCode, verificationHash, invitedGuestsText, guestCount);
+  const checkInUrl = buildCheckInUrl(invitationCode, verificationHash, invitedGuestsText, guestCount, variant);
   const qrCodeDataUrl = await QRCode.toDataURL(checkInUrl, {
     width: 180,
     margin: 1,
     color: {
-      dark: '#101010',
-      light: '#f5e7b6',
+      dark: theme.qrDark,
+      light: theme.qrLight,
     },
   });
 
@@ -192,9 +249,9 @@ export const generatePdfInvitation = async (
       height: 100%;
       padding: 38px 48px;
       font-family: Georgia, 'Palatino Linotype', Palatino, 'Times New Roman', serif;
-      background: radial-gradient(circle at 15% 15%, rgba(212,175,55,0.15), transparent 35%), radial-gradient(circle at 85% 25%, rgba(212,175,55,0.12), transparent 40%), linear-gradient(155deg, #050505 0%, #0f0f0f 55%, #161616 100%);
-      border: 1.5px solid #d4af37;
-      box-shadow: inset 0 0 0 7px rgba(16,16,16,0.92), inset 0 0 0 9px rgba(212,175,55,0.28);
+      background: ${theme.pageBackground};
+      border: 1.5px solid ${theme.border};
+      box-shadow: inset 0 0 0 7px ${theme.inset}, inset 0 0 0 9px ${theme.insetBorder};
       position: relative;
       display: flex;
       flex-direction: column;
@@ -205,93 +262,107 @@ export const generatePdfInvitation = async (
       overflow: hidden;
     ">
 
-      <div style="position: absolute; top: 16px; left: 16px; color: #d4af37; font-size: 22px; line-height: 1;">❀</div>
-      <div style="position: absolute; top: 16px; right: 16px; color: #d4af37; font-size: 22px; line-height: 1;">❀</div>
-      <div style="position: absolute; bottom: 16px; left: 16px; color: #d4af37; font-size: 22px; line-height: 1;">❀</div>
-      <div style="position: absolute; bottom: 16px; right: 16px; color: #d4af37; font-size: 22px; line-height: 1;">❀</div>
+      <div style="position: absolute; top: 16px; left: 16px; color: ${theme.accent}; font-size: 22px; line-height: 1;">❀</div>
+      <div style="position: absolute; top: 16px; right: 16px; color: ${theme.accent}; font-size: 22px; line-height: 1;">❀</div>
+      <div style="position: absolute; bottom: 16px; left: 16px; color: ${theme.accent}; font-size: 22px; line-height: 1;">❀</div>
+      <div style="position: absolute; bottom: 16px; right: 16px; color: ${theme.accent}; font-size: 22px; line-height: 1;">❀</div>
 
-      <p style="font-size: 10px; letter-spacing: 5px; color: #d4af37; text-transform: uppercase; margin: 0 0 14px 0; font-family: Georgia, serif;">
-        ${escapeHtml(localize(language, 'pdfInvitationTitle'))}
+      <p style="font-size: 10px; letter-spacing: 5px; color: ${theme.accent}; text-transform: uppercase; margin: 0 0 14px 0; font-family: Georgia, serif;">
+        ${escapeHtml(variant === 'traditional' ? 'Invitation Mariage Traditionnel' : localize(language, 'pdfInvitationTitle'))}
       </p>
 
       <div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin-bottom: 16px;">
-        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #d4af37);"></div>
-        <span style="color: #d4af37; font-size: 14px; margin: 0 14px;">✦</span>
-        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, #d4af37);"></div>
+        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, ${theme.accent});"></div>
+        <span style="color: ${theme.accent}; font-size: 14px; margin: 0 14px;">✦</span>
+        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, ${theme.accent});"></div>
       </div>
 
-      <p style="font-size: 16px; color: #f8e7b5; margin: 0 0 8px 0; font-weight: bold; font-style: italic; font-family: Georgia, serif;">
+      <p style="font-size: 16px; color: ${theme.textPrimary}; margin: 0 0 8px 0; font-weight: bold; font-style: italic; font-family: Georgia, serif;">
         ${escapeHtml(formalRecipient)}
       </p>
 
-      <p style="font-size: 12.5px; color: #efe0b5; line-height: 1.7; margin: 0 0 10px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
-        ${escapeHtml(localize(language, 'pdfFormalInvitationBody'))}
+      <p style="font-size: 12.5px; color: ${theme.textSecondary}; line-height: 1.7; margin: 0 0 10px 0; font-style: italic; max-width: 560px; font-family: Georgia, serif;">
+        ${escapeHtml(
+          variant === 'traditional'
+            ? language === 'fr'
+              ? 'C’est avec une immense joie que les familles DIMBI et MAKANGA ont l’honneur de vous convier au mariage traditionnel de leurs enfants Franck Dimbi et Charlie Makanga, le 25 juillet 2026 à 19h00 à Kinshasa.'
+              : 'With immense joy, the DIMBI and MAKANGA families have the honor to invite you to the traditional wedding of their children Franck Dimbi and Charlie Makanga on 25 July 2026 at 7:00 PM in Kinshasa.'
+            : localize(language, 'pdfFormalInvitationBody')
+        )}
       </p>
 
-      <div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid rgba(212,175,55,0.6); border-bottom: 1.5px solid rgba(212,175,55,0.6); background: rgba(0,0,0,0.35); width: 100%; max-width: 580px; box-sizing: border-box;">
+      <div style="margin: 16px 0; padding: 16px 32px 12px; border-top: 1.5px solid ${theme.accentSoft}; border-bottom: 1.5px solid ${theme.accentSoft}; background: ${theme.recipientBg}; width: 100%; max-width: 580px; box-sizing: border-box;">
         <div style="line-height: 1.1; margin-bottom: 8px; white-space: nowrap;">
-          <span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: #f8e7b5;">Franck</span><span style="font-family: Georgia, serif; font-size: 40px; color: #d4af37; font-style: italic; padding: 0 18px; vertical-align: middle;">&amp;</span><span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: #f8e7b5;">Charly</span>
+          <span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Franck</span><span style="font-family: Georgia, serif; font-size: 40px; color: ${variant === 'traditional' ? '#84cc16' : theme.accent}; font-style: italic; padding: 0 18px; vertical-align: middle;">&amp;</span><span style="font-family: 'Great Vibes', 'Palatino Linotype', Palatino, Georgia, cursive; font-size: 70px; font-style: italic; color: ${theme.textPrimary};">Charly</span>
         </div>
-        <p style="font-size: 10px; letter-spacing: 5.5px; color: #d4af37; margin: 0; text-transform: uppercase; font-family: Georgia, serif;">
+        <p style="font-size: 10px; letter-spacing: 5.5px; color: ${theme.accent}; margin: 0; text-transform: uppercase; font-family: Georgia, serif;">
           Dimbi &nbsp;&#10022;&nbsp; Makanga
         </p>
       </div>
 
       <div style="width: 100%; max-width: 580px; display: grid; grid-template-columns: 1fr; gap: 10px; margin: 6px 0 10px 0;">
-        <div style="border: 1px solid rgba(212,175,55,0.25); border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.03); text-align: left;">
-          <p style="margin: 0 0 4px 0; color: #d4af37; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+        <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
+          <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
             📅 ${escapeHtml(localize(language, 'date'))}
           </p>
-          <p style="margin: 0; color: #f8e7b5; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
+          <p style="margin: 0; color: ${theme.textPrimary}; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
             ${escapeHtml(formattedWeddingDate)}
           </p>
         </div>
-        <div style="border: 1px solid rgba(212,175,55,0.25); border-radius: 16px; padding: 12px 14px; background: rgba(255,255,255,0.03); text-align: left;">
-          <p style="margin: 0 0 4px 0; color: #d4af37; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+        <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
+          <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+            🕒 ${escapeHtml(localize(language, 'time'))}
+          </p>
+          <p style="margin: 0; color: ${theme.textPrimary}; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
+            ${escapeHtml(formattedWeddingTime)}
+          </p>
+        </div>
+        <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
+          <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
             📍 ${escapeHtml(localize(language, 'venue'))}
           </p>
-          <p style="margin: 0; color: #f8e7b5; font-size: 12.5px; font-weight: bold; font-family: Georgia, serif;">
-            ${escapeHtml(weddingData.venue.name)}
+          <p style="margin: 0; color: ${theme.textPrimary}; font-size: 12.5px; font-weight: bold; font-family: Georgia, serif;">
+            ${escapeHtml(eventData.venue.name)}
           </p>
-          <p style="margin: 4px 0 0 0; color: #d7c38a; font-size: 10.5px; line-height: 1.5; font-family: Georgia, serif;">
-            ${escapeHtml(weddingData.venue.address)}
+          <p style="margin: 4px 0 0 0; color: ${theme.textMuted}; font-size: 10.5px; line-height: 1.5; font-family: Georgia, serif;">
+            ${escapeHtml(eventData.venue.address)}
           </p>
         </div>
       </div>
 
       <div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin: 8px 0 12px;">
-        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, #d4af37);"></div>
-        <span style="color: #d4af37; font-size: 14px; margin: 0 14px;">✦</span>
-        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, #d4af37);"></div>
+        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, ${theme.accent});"></div>
+        <span style="color: ${theme.accent}; font-size: 14px; margin: 0 14px;">✦</span>
+        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, ${theme.accent});"></div>
       </div>
 
       <div style="width: 100%; max-width: 580px; text-align: left;">
-        <p style="font-size: 9.5px; letter-spacing: 4px; color: #d4af37; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
+        <p style="font-size: 9.5px; letter-spacing: 4px; color: ${theme.accent}; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
           ${escapeHtml(localize(language, 'pdfProgramAndDressCode'))}
         </p>
-        <p style="font-size: 10px; color: #efe0b5; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;">
-          <strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(weddingData.dressCode)}
+        <p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;">
+          <strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(eventData.dressCode)}
         </p>
         ${scheduleHtml}
       </div>
 
-      <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 580px; border-top: 1px solid rgba(212,175,55,0.45); padding-top: 12px;">
-        <div style="text-align: left; font-size: 10px; color: #e9d8a6; font-family: Georgia, serif; flex: 1; padding-right: 14px;">
+      <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 580px; border-top: 1px solid ${theme.accentSoft}; padding-top: 12px;">
+        <div style="text-align: left; font-size: 10px; color: ${theme.textSecondary}; font-family: Georgia, serif; flex: 1; padding-right: 14px;">
           <p style="margin: 2px 0;">
             <strong>${escapeHtml(localize(language, 'pdfGuestCount'))}:</strong> ${guestCount}
           </p>
           <p style="margin: 2px 0;">
             <strong>${escapeHtml(localize(language, 'pdfGenerated'))}:</strong> ${new Date().toLocaleDateString(getLocale(language))}
           </p>
-          <p style="margin: 8px 0 0 0; font-size: 8.5px; letter-spacing: 0.5px; color: #d4af37; text-transform: uppercase; line-height: 1.45;">
+          <p style="margin: 8px 0 0 0; font-size: 8.5px; letter-spacing: 0.5px; color: ${theme.accent}; text-transform: uppercase; line-height: 1.45;">
             ${escapeHtml(localize(language, 'pdfValidIfListed'))}
           </p>
         </div>
         <div style="text-align: center; flex-shrink: 0;">
-          <div style="width: 100px; border: 1px solid #d4af37; background: #f5e7b6; padding: 5px; border-radius: 6px;">
+          <div style="width: 100px; border: 1px solid ${theme.qrBorder}; background: ${theme.qrLight}; padding: 5px; border-radius: 6px;">
             <img src="${qrCodeDataUrl}" alt="QR" style="width: 100%; height: auto; display: block;" />
           </div>
-          <p style="margin: 4px 0 0 0; font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase; color: #d4af37; font-family: Georgia, serif;">
+          <p style="margin: 4px 0 0 0; font-size: 8.5px; letter-spacing: 0.8px; text-transform: uppercase; color: ${theme.accent}; font-family: Georgia, serif;">
             ${escapeHtml(localize(language, 'pdfScanToValidate'))}
           </p>
         </div>
@@ -309,7 +380,7 @@ export const generatePdfInvitation = async (
     const canvas = await html2canvas(container, {
       scale: 2,
       useCORS: true,
-      backgroundColor: '#0f0f0f',
+      backgroundColor: theme.canvasBackground,
       logging: false,
       allowTaint: true,
       imageTimeout: 15000,
@@ -419,13 +490,15 @@ function buildCheckInUrl(
   invitationCode: string,
   verificationHash: string,
   guestName: string,
-  guestCount: number
+  guestCount: number,
+  variant: GuestLogVariant = 'religious'
 ) {
   const baseUrl =
     process.env.NEXT_PUBLIC_APP_URL ||
     (typeof window !== 'undefined' ? window.location.origin : 'https://example.com');
 
   const url = new URL(baseUrl);
+  url.pathname = variant === 'traditional' ? '/traditional' : '/';
   url.searchParams.set('checkin', '1');
   url.searchParams.set('invitation', invitationCode);
   url.searchParams.set('hash', verificationHash);

@@ -64,6 +64,7 @@ export default function GuestCheckInPanel({ variant = 'religious' }: GuestCheckI
     : guestNameFromUrl;
 
   const displayCount = guest ? guest.attendanceCount : guestCountParam;
+  const returnHref = variant === 'traditional' ? '/traditional' : '/';
 
   if (!isCheckInMode) return null;
 
@@ -129,7 +130,7 @@ export default function GuestCheckInPanel({ variant = 'religious' }: GuestCheckI
         )}
 
         <a
-          href="/"
+          href={returnHref}
           className="mt-4 block text-xs text-rose-400 hover:text-rose-600"
         >
           ← Retour au site

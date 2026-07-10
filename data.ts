@@ -106,34 +106,19 @@ export const traditionalWeddingData: WeddingData = {
     groom: 'Franck',
     displayName: 'Franck & Charly',
   },
-  weddingDate: '2026-08-01T14:00:00+02:00',
+  weddingDate: '2026-07-25T19:00:00+02:00',
   venue: {
     name: 'Salle Food Market',
     city: 'Kinshasa, Democratic Republic of Congo',
     address: 'Avenue Nguma 102, Réf. Saint Luc, C/Ngaliema',
   },
   heroImage: '/media/Franck%20et%20Charlie%202.jpeg',
-  dressCode: 'Black and gold',
+  dressCode: 'Blanc, bleu, vert citron et jaune',
   schedule: [
     {
       title: 'Arrivée des familles et présentations',
-      time: '14:00',
-      description: 'Rassemblement des familles et présentation officielle des deux clans aux sons des tam-tams.',
-    },
-    {
-      title: 'Cérémonie traditionnelle du mariage',
-      time: '15:30',
-      description: 'Célébration des rituels traditionnels congolais avec bénédictions des ancêtres et échanges solennels.',
-    },
-    {
-      title: 'Danses et célébrations',
-      time: '17:30',
-      description: 'Danses traditionnelles, démonstrations de joie et musiques folkloriques du Congo.',
-    },
-    {
-      title: 'Festin traditionnel',
       time: '19:00',
-      description: 'Repas avec les mets traditionnels et réjouissances en famille.',
+      description: 'Accueil des familles et présentations pour lancer la soirée du mariage traditionnel dans une ambiance élégante et festive.',
     },
   ],
   gallery: [
