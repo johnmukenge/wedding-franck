@@ -347,25 +347,10 @@ export const generatePdfInvitation = async (
         </div>
       </div>
 
-      <div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin: 8px 0 12px;">
-        <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, ${theme.accent});"></div>
-        <span style="color: ${theme.accent}; font-size: 14px; margin: 0 14px;">✦</span>
-        <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, ${theme.accent});"></div>
-      </div>
-
-      <div style="width: 100%; max-width: 580px; text-align: left;">
-        <p style="font-size: 9.5px; letter-spacing: 4px; color: ${theme.accent}; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
-          ${escapeHtml(variant === 'traditional' ? localize(language, 'traditionalProgramTitle') : localize(language, 'pdfProgramAndDressCode'))}
-        </p>
-        ${
-          variant === 'traditional'
-            ? `<p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; line-height: 1.45; font-family: Georgia, serif;">${escapeHtml(localize(language, 'traditionalProgramLine'))}</p>`
-            : `<p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;"><strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(eventData.dressCode)}</p>`
-        }
-        ${scheduleHtml}
-        ${
-          variant === 'traditional'
-            ? `<div style="margin-top: 10px; padding: 10px 12px; border: 1px solid ${theme.accentSoft}; border-radius: 14px; background: ${theme.sectionBg};">
+      ${
+        variant === 'traditional'
+          ? `<div style="width: 100%; max-width: 580px; text-align: left; margin-top: 8px;">
+              <div style="padding: 10px 12px; border: 1px solid ${theme.accentSoft}; border-radius: 14px; background: ${theme.sectionBg};">
                 <p style="margin: 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase; font-family: Georgia, serif;">
                   ${escapeHtml(localize(language, 'traditionalGenerosityTitle'))}
                 </p>
@@ -375,10 +360,22 @@ export const generatePdfInvitation = async (
                 <p style="margin: 7px 0 0 0; color: ${theme.accent}; font-size: 10px; font-weight: bold; text-align: center; font-family: Georgia, serif;">
                   ${escapeHtml(localize(language, 'traditionalWelcome'))}
                 </p>
-              </div>`
-            : ''
-        }
-      </div>
+              </div>
+            </div>`
+          : `<div style="display: flex; align-items: center; width: 100%; max-width: 580px; margin: 8px 0 12px;">
+              <div style="flex: 1; height: 1px; background: linear-gradient(to right, transparent, ${theme.accent});"></div>
+              <span style="color: ${theme.accent}; font-size: 14px; margin: 0 14px;">✦</span>
+              <div style="flex: 1; height: 1px; background: linear-gradient(to left, transparent, ${theme.accent});"></div>
+            </div>
+
+            <div style="width: 100%; max-width: 580px; text-align: left;">
+              <p style="font-size: 9.5px; letter-spacing: 4px; color: ${theme.accent}; text-transform: uppercase; margin: 0 0 8px 0; font-family: Georgia, serif; text-align: center;">
+                ${escapeHtml(localize(language, 'pdfProgramAndDressCode'))}
+              </p>
+              <p style="font-size: 10px; color: ${theme.textSecondary}; margin: 0 0 8px 0; text-align: center; font-family: Georgia, serif;"><strong>👔 ${escapeHtml(localize(language, 'dressCode'))}:</strong> ${escapeHtml(eventData.dressCode)}</p>
+              ${scheduleHtml}
+            </div>`
+      }
 
       <div style="margin-top: 12px; display: flex; align-items: center; justify-content: space-between; width: 100%; max-width: 580px; border-top: 1px solid ${theme.accentSoft}; padding-top: 12px;">
         <div style="text-align: left; font-size: 10px; color: ${theme.textSecondary}; font-family: Georgia, serif; flex: 1; padding-right: 14px;">

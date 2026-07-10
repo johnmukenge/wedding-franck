@@ -15,10 +15,6 @@ const getLocale = (language: 'en' | 'fr') => {
   return 'en-GB';
 };
 
-const scheduleTranslationKeys = [
-  { title: 'familyArrival', description: 'familyArrivalDesc' },
-] as const;
-
 export default function TraditionalPageContent() {
   const language = 'fr';
   const t = (key: string) => getTranslation(language, key);
@@ -71,7 +67,7 @@ export default function TraditionalPageContent() {
                   href="#details"
                   className="rounded-full bg-sky-700 px-6 py-3 text-xs uppercase tracking-[0.22em] text-white shadow-lg transition hover:bg-sky-800"
                 >
-                  Découvrir le programme
+                  Voir les détails
                 </a>
                 <div className="rounded-full border border-lime-300 bg-white/85 px-5 py-3 text-sm text-sky-900 shadow-sm backdrop-blur">
                   {formattedDate} · {formattedTime} · Kinshasa
@@ -117,55 +113,19 @@ export default function TraditionalPageContent() {
       </Suspense>
 
       <section id="details" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
-          <div className="fade-in-up rounded-[2rem] border border-sky-100 bg-white p-8 shadow-soft backdrop-blur">
-            <p className="text-xs uppercase tracking-[0.25em] text-sky-600">{t('untilWeDoIT')}</p>
-            <h2 className="mt-3 font-serif text-3xl text-sky-950 sm:text-4xl">{t('countdown')}</h2>
-            <p className="mt-4 text-sm leading-7 text-sky-800">
-              {t('traditionalProgramLine')}
-            </p>
-            <div className="mt-8">
-              <Countdown targetDate={traditionalWeddingData.weddingDate} />
-            </div>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-1">
-            {traditionalWeddingData.schedule.map((item, index) => {
-              const translationKeys = scheduleTranslationKeys[index];
-              return (
-                <article
-                  key={`${item.time}-${index}`}
-                  className="fade-in-up overflow-hidden rounded-[1.65rem] border border-sky-100 bg-gradient-to-br from-sky-50 via-white to-lime-50 p-6 shadow-soft"
-                  style={{
-                    animationDelay: `${index * 120}ms`,
-                  }}
-                >
-                  <p className="text-xs uppercase tracking-[0.22em] text-lime-700">
-                    {item.time}
-                  </p>
-                  <h3 className="mt-2 font-serif text-2xl text-sky-950">
-                    {translationKeys ? t(translationKeys.title) : item.title}
-                  </h3>
-                  <p className="mt-3 text-sm leading-relaxed text-sky-800">
-                    {translationKeys ? t(translationKeys.description) : item.description}
-                  </p>
-                </article>
-              );
-            })}
+        <div className="fade-in-up rounded-[2rem] border border-sky-100 bg-white p-8 shadow-soft backdrop-blur">
+          <p className="text-xs uppercase tracking-[0.25em] text-sky-600">{t('untilWeDoIT')}</p>
+          <h2 className="mt-3 font-serif text-3xl text-sky-950 sm:text-4xl">{t('countdown')}</h2>
+          <p className="mt-4 text-sm leading-7 text-sky-800">
+            {t('traditionalCoutumierBody')}
+          </p>
+          <div className="mt-8">
+            <Countdown targetDate={traditionalWeddingData.weddingDate} />
           </div>
         </div>
 
         <div className="fade-in-up fade-in-delay-2 mt-8 rounded-[1.75rem] border border-sky-100 bg-white p-6 text-sm text-sky-900 shadow-soft backdrop-blur">
           <p>
-            <span className="font-semibold text-sky-700">{t('venue')}:</span> {traditionalWeddingData.venue.name}, {traditionalWeddingData.venue.address}
-          </p>
-          <p className="mt-2">
-            <span className="font-semibold text-sky-700">{t('date')}:</span> {formattedDate}
-          </p>
-          <p className="mt-2">
-            <span className="font-semibold text-sky-700">{t('time')}:</span> {formattedTime}
-          </p>
-          <p className="mt-2">
             <span className="font-semibold text-sky-700">{t('traditionalGenerosityTitle')}:</span> {t('traditionalGenerosityBody')}
           </p>
           <p className="mt-3 text-center font-semibold text-sky-700">{t('traditionalWelcome')}</p>
