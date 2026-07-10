@@ -189,10 +189,15 @@ export const generatePdfInvitation = async (
       year: 'numeric',
     }
   );
-  const formattedWeddingTime = eventDate.toLocaleTimeString(getLocale(language), {
-    hour: '2-digit',
-    minute: '2-digit',
-  });
+  const formattedWeddingTime =
+    variant === 'traditional'
+      ? language === 'fr'
+        ? '19h'
+        : '7:00 PM'
+      : eventDate.toLocaleTimeString(getLocale(language), {
+          hour: '2-digit',
+          minute: '2-digit',
+        });
 
   const sanitizedFirst = guestData.firstName.replace(/[^a-z0-9]/gi, '');
   const sanitizedLast = guestData.lastName.replace(/[^a-z0-9]/gi, '');
