@@ -92,6 +92,7 @@ export default function TraditionalPageContent() {
                   <div className="mx-auto mt-6 h-px w-20 bg-gradient-to-r from-transparent via-lime-500 to-transparent" />
                   <p className="mt-6 text-base uppercase tracking-[0.28em] text-lime-700">25 juillet 2026</p>
                   <p className="mt-2 text-sm leading-7 text-sky-900/90">{traditionalWeddingData.venue.name} · Kinshasa</p>
+                  <p className="mt-1 text-xs leading-6 text-sky-700/90">{traditionalWeddingData.venue.address}</p>
                   <div className="mt-8 grid grid-cols-3 gap-3 text-center text-xs uppercase tracking-[0.2em] text-sky-800">
                     <div className="rounded-2xl bg-white py-4 shadow-sm ring-1 ring-sky-100">
                       <span className="block text-2xl font-serif text-sky-950">25</span>

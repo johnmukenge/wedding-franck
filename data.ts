@@ -110,7 +110,7 @@ export const traditionalWeddingData: WeddingData = {
   venue: {
     name: 'Salle de fête Frères des Écoles Chrétiennes',
     city: 'Kinshasa, Democratic Republic of Congo',
-    address: 'Av. Lukengo N°07, Réf: Stade Vélodrome, en face de l’école Saint Georges',
+    address: "Avenue Lukengo n°07 Réf. Stade Velodrome en face de l'école Saint Georges",
   },
   heroImage: '/media/Franck%20et%20Charlie%202.jpeg',
   dressCode: 'Blanc, bleu, vert citron et jaune',
