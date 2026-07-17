@@ -351,14 +351,18 @@ export const generatePdfInvitation = async (
             ${escapeHtml(formattedWeddingDate)}
           </p>
         </div>
-        <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
-          <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
-            🕒 ${escapeHtml(localize(language, 'time'))}
-          </p>
-          <p style="margin: 0; color: ${theme.textPrimary}; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
-            ${escapeHtml(formattedWeddingTime)}
-          </p>
-        </div>
+        ${
+          variant === 'traditional'
+            ? `<div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
+                <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
+                  🕒 ${escapeHtml(localize(language, 'time'))}
+                </p>
+                <p style="margin: 0; color: ${theme.textPrimary}; font-size: 13px; text-transform: capitalize; font-family: Georgia, serif;">
+                  ${escapeHtml(formattedWeddingTime)}
+                </p>
+              </div>`
+            : ''
+        }
         <div style="border: 1px solid ${theme.accentSoft}; border-radius: 16px; padding: 12px 14px; background: ${theme.sectionBg}; text-align: left;">
           <p style="margin: 0 0 4px 0; color: ${theme.accent}; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; font-family: Georgia, serif;">
             📍 ${escapeHtml(localize(language, 'venue'))}
