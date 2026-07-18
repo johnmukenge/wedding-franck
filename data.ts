@@ -39,9 +39,9 @@ export const weddingData: WeddingData = {
   },
   weddingDate: '2026-08-01T10:00:00+02:00',
   venue: {
-    name: 'Salle de fête des Frères des Écoles Chrétiennes',
+    name: 'Salle de fête Food Market',
     city: 'Kinshasa, Democratic Republic of Congo',
-    address: 'Avenue Nguma n°102, Réf. Saint Luc C/Ngaliema'
+    address: 'Avenue Nguma n°102, Réf. Paroisse Saint Luc C/Ngaliema'
   },
   heroImage: '/media/Franck%20et%20Charlie.jpeg',
   dressCode: 'Noir doré',
